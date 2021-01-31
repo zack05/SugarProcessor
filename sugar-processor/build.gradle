@@ -1,5 +1,21 @@
+plugins {
+    id 'java'
+}
 apply plugin: 'java-library'
 apply plugin: 'kotlin'
+apply plugin: 'maven'
+
+group = 'com.github.jitpack'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+    maven { url 'https://jitpack.io' }
+}
+
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -10,8 +26,5 @@ dependencies {
     implementation "androidx.recyclerview:recyclerview:1.1.0"
     implementation 'com.squareup:javapoet:1.10.0'
     implementation 'com.squareup:kotlinpoet:1.6.0'
-    implementation 'com.github.zack05:SugarAnnotation:v0.0.3'
+    implementation project(':sugar-annotation')
 }
-
-sourceCompatibility = "1.7"
-targetCompatibility = "1.7"

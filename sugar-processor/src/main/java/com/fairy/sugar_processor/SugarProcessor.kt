@@ -63,13 +63,13 @@ class SugarProcessor : AbstractProcessor() {
                 .endControlFlow()
                 .build()
         ).build()
+        testObject.addProperty(mViewHoldersViewTypes)
 
         testObject.addInitializerBlock(
             CodeBlock.builder()
                 .add("SugarGenerator.registerViewHolders(mViewHoldersViewTypes)")
                 .build()
         )
-        testObject.addProperty(mViewHoldersViewTypes)
         testObject.addFunction(
             FunSpec.builder("getViewType")
                 .addParameter(

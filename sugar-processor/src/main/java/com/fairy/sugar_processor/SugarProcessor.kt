@@ -39,7 +39,7 @@ class SugarProcessor : AbstractProcessor() {
         elements = processingEnvironment?.elementUtils
         annotatedClasses = HashMap()
 
-        val testObject = com.squareup.kotlinpoet.TypeSpec.objectBuilder("ViewHolderGenerator")
+        val testObject = com.squareup.kotlinpoet.TypeSpec.classBuilder("ViewHolderGenerator")
 
         /*
 
@@ -64,11 +64,12 @@ class SugarProcessor : AbstractProcessor() {
                 .build()
         ).build()
 
-        testObject.addProperty(mViewHoldersViewTypes)
-        testObject.addFunction(
-            FunSpec.builder("init")
-                .addCode("SugarGenerator.registerViewHolders(mViewHoldersViewTypes)").build()
+        testObject.addInitializerBlock(
+            CodeBlock.builder()
+                .add("SugarGenerator.registerViewHolders(mViewHoldersViewTypes)")
+                .build()
         )
+        testObject.addProperty(mViewHoldersViewTypes)
         testObject.addFunction(
             FunSpec.builder("getViewType")
                 .addParameter(
@@ -95,7 +96,9 @@ class SugarProcessor : AbstractProcessor() {
                         "viewType",
                         Int::class.asClassName()
                     )
-                ).returns(com.squareup.kotlinpoet.ClassName.bestGuess("com.fairy.viewholdergenerator.BaseViewHolder")).addCode(
+                )
+                .returns(com.squareup.kotlinpoet.ClassName.bestGuess("com.fairy.viewholdergenerator.BaseViewHolder"))
+                .addCode(
                     """
         if (viewType == -1) return EmptyUIModelViewHolder(parent)
         return SugarGenerator.createViewHolder(parent, viewType) ?: EmptyUIModelViewHolder(parent)
